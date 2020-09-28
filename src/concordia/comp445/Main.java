@@ -1,8 +1,7 @@
 package concordia.comp445;
 
-import java.io.*;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.Map;
+import static java.util.Map.entry;
 
 /**
  * This program demonstrates a client socket application that connects
@@ -13,28 +12,13 @@ import java.net.UnknownHostException;
  */
 
 public class Main {
-    public static void main(String[] args) {
-        String hostname = "time.nist.gov";
-        int port = 13;
+    public static void main(String[] args) throws Exception {
 
-        try (Socket socket = new Socket(hostname, port)) {
+//        String url = "https://www.google.ca/?q=hello+world";
 
-            InputStream input = socket.getInputStream();
-            InputStreamReader reader = new InputStreamReader(input);
+        String url = "http://localhost:9891/";
+        Map<String,String> headers = Map.ofEntries(entry("Accept: ","text/html"));
+        System.out.println(HttpClient.get(url, headers));
 
-            int character;
-            StringBuilder data = new StringBuilder();
-
-            while ((character = reader.read()) != -1) {
-                data.append((char) character);
-            }
-
-            System.out.println(data);
-
-        } catch (UnknownHostException ex) {
-            System.out.println("Server not found: " + ex.getMessage());
-        } catch (IOException ex) {
-            System.out.println("I/O error: " + ex.getMessage());
-        }
     }
 }
