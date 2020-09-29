@@ -8,12 +8,12 @@ import static java.util.Map.entry;
 
 public class Main {
     public static void main(String[] args) {
-//        getParams();
-//        delete();
-//        getParamsVerbose();
-//        postJson();
-//        postFile();
-//        getRedirect();
+        getParams();
+        delete();
+        getParamsVerbose();
+        postJson();
+        postFile();
+        getRedirect();
     }
 
     public static void getParams() {
@@ -24,7 +24,7 @@ public class Main {
 
     public static void delete() {
         String url = "http://dummy.restapiexample.com/delete/";
-        System.out.println(HttpClient.get(url, null, false));
+        System.out.println(HttpClient.delete(url, null, false));
     }
 
     public static void getParamsVerbose() {
