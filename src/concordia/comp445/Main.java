@@ -1,6 +1,7 @@
 package concordia.comp445;
 
 import java.util.Map;
+
 import static java.util.Map.entry;
 
 /**
@@ -13,12 +14,31 @@ import static java.util.Map.entry;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        post();
+//        get();
+    }
 
-//        String url = "https://www.google.ca/?q=hello+world";
-
+    public static void get() {
         String url = "http://localhost:9891/";
-        Map<String,String> headers = Map.ofEntries(entry("Accept: ","text/html"));
+        Map<String, String> headers = Map.ofEntries(entry("Accept ", "text/html"));
         System.out.println(HttpClient.get(url, headers));
+    }
 
+    public static void post() {
+
+        String url = "http://httpbin.org/post";
+//        String url = "http://localhost:9891/login";
+//        String json = "{\"email\":1,\"password\":\"John\"}";
+        String data = "hello";
+//        Map<String,String> headers = Map.ofEntries(entry("a","b"));
+        Map<String, String> headers = Map.ofEntries(entry("Content-Length", data.length() + ""));//, entry("Content-Type", "text/plain"));
+        System.out.println(HttpClient.post(url, headers, data));
+
+    }
+
+    public static void post1() {
+        String url = "http://localhost:9891/";
+        Map<String, String> headers = Map.ofEntries(entry("Accept: ", "text/html"));
+        System.out.println(HttpClient.post(url, headers));
     }
 }
