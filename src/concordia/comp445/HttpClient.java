@@ -38,6 +38,11 @@ public class HttpClient {
         return request(url, headers, verbose);
     }
 
+    public static String delete(String url, Map<String, String> headers, boolean verbose) {
+        verb = "DELETE";
+        return request(url, headers, verbose);
+    }
+
     /**
      * POST endpoint for http client
      *
@@ -99,7 +104,8 @@ public class HttpClient {
             // close socket
             socket.close();
 
-            response = handleRedirect(response, headers, verbose);
+            if ((response.toLowerCase().contains("302 found") || response.toLowerCase().contains("301 moved permanently")) && response.contains("Location"))
+                response = handleRedirect(response, headers, verbose);
 
 
             // static class so always make sure to reset after each request
@@ -118,18 +124,16 @@ public class HttpClient {
     }
 
     private static String handleRedirect(String response, Map<String, String> headers, boolean verbose) {
-        if (response.toLowerCase().contains("302 found") && response.contains("Location")) {
-            String newURL = response.substring(response.indexOf("Location:") + 10);
-            newURL = newURL.substring(0, newURL.indexOf("\n"));
+        String newURL = response.substring(response.indexOf("Location:") + 10);
+        newURL = newURL.substring(0, newURL.indexOf("\n"));
 
-            if (verb.equals("POST")) {
-                if (payload != null)
-                    return post(newURL, headers, payload, verbose);
-                else if (filePayload != null)
-                    return post(newURL, headers, filePayload, verbose);
-                else return post(newURL, headers, verbose);
-            } else return get(newURL, headers, verbose);
-        } else return response;
+        if (verb.equals("POST")) {
+            if (payload != null)
+                return post(newURL, headers, payload, verbose);
+            else if (filePayload != null)
+                return post(newURL, headers, filePayload, verbose);
+            else return post(newURL, headers, verbose);
+        } else return get(newURL, headers, verbose);
     }
 
     private static void sendRequest(Map<String, String> headers) throws IOException {
@@ -140,11 +144,13 @@ public class HttpClient {
         writer = new PrintWriter(output, true);
 
         String path = determinePath(uri);
-        if (verb.equals("POST")) {
+        if (verb.equals("POST"))
             writer.println("POST " + path + " HTTP/1.0");
-        } else {
+        else if (verb.equals("GET"))
             writer.println("GET " + path + " HTTP/1.0");
-        }
+        else
+            writer.println("DELETE " + path + " HTTP/1.0");
+
 
         // default headers
         writer.println("Accept:" + "*/*");
@@ -155,15 +161,17 @@ public class HttpClient {
         boolean isContentLengthPresent = false;
 
         // add given headers
-        for (String key : headers.keySet()) {
-            writer.println(key + ": " + headers.get(key));
+        if (headers != null) {
+            for (String key : headers.keySet()) {
+                writer.println(key + ": " + headers.get(key));
 
-            if (verb.equals("POST")) {
-                if (key.trim().equalsIgnoreCase("content-type")) {
-                    isContentTypePresent = true;
-                }
-                if (key.trim().equalsIgnoreCase("content-length")) {
-                    isContentLengthPresent = true;
+                if (verb.equals("POST")) {
+                    if (key.trim().equalsIgnoreCase("content-type")) {
+                        isContentTypePresent = true;
+                    }
+                    if (key.trim().equalsIgnoreCase("content-length")) {
+                        isContentLengthPresent = true;
+                    }
                 }
             }
         }

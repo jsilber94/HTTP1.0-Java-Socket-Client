@@ -9,10 +9,11 @@ import static java.util.Map.entry;
 public class Main {
     public static void main(String[] args) {
 //        getParams();
+//        delete();
 //        getParamsVerbose();
 //        postJson();
 //        postFile();
-        getRedirect();
+//        getRedirect();
     }
 
     public static void getParams() {
@@ -20,6 +21,12 @@ public class Main {
         Map<String, String> headers = Map.ofEntries(entry("Accept ", "text/html"));
         System.out.println(HttpClient.get(url, headers, false));
     }
+
+    public static void delete() {
+        String url = "http://dummy.restapiexample.com/delete/";
+        System.out.println(HttpClient.get(url, null, false));
+    }
+
     public static void getParamsVerbose() {
         String url = "http://httpbin.org/get?course=networking&assignment=1";
         Map<String, String> headers = Map.ofEntries(entry("Accept ", "text/html"));
