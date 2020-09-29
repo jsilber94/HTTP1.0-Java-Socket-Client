@@ -1,44 +1,43 @@
 package concordia.comp445;
 
+import java.io.File;
 import java.util.Map;
 
 import static java.util.Map.entry;
 
-/**
- * This program demonstrates a client socket application that connects
- * to a Whois server to get information about a domain name.
- *
- * @author www.codejava.net
- * https://www.codejava.net/java-se/networking/java-socket-client-examples-tcp-ip
- */
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        post();
-//        get();
+    public static void main(String[] args) {
+        getParams();
+        getParamsVerbose();
+        postJson();
+        postFile();
     }
 
-    public static void get() {
-        String url = "http://localhost:9891/";
+
+    public static void getParams() {
+        String url = "http://httpbin.org/get?course=networking&assignment=1";
         Map<String, String> headers = Map.ofEntries(entry("Accept ", "text/html"));
-        System.out.println(HttpClient.get(url, headers));
+        System.out.println(HttpClient.get(url, headers, false));
+    }
+    public static void getParamsVerbose() {
+        String url = "http://httpbin.org/get?course=networking&assignment=1";
+        Map<String, String> headers = Map.ofEntries(entry("Accept ", "text/html"));
+        System.out.println(HttpClient.get(url, headers, true));
     }
 
-    public static void post() {
-
+    public static void postJson() {
         String url = "http://httpbin.org/post";
-//        String url = "http://localhost:9891/login";
-//        String json = "{\"email\":1,\"password\":\"John\"}";
-        String data = "hello";
-//        Map<String,String> headers = Map.ofEntries(entry("a","b"));
-        Map<String, String> headers = Map.ofEntries(entry("Content-Length", data.length() + ""));//, entry("Content-Type", "text/plain"));
-        System.out.println(HttpClient.post(url, headers, data));
-
+        String json = "{\"Assignment\":1}";
+        Map<String, String> headers = Map.ofEntries(entry("Content-Type:", "application/json"));
+        System.out.println(HttpClient.post(url, headers, json, false));
     }
 
-    public static void post1() {
-        String url = "http://localhost:9891/";
-        Map<String, String> headers = Map.ofEntries(entry("Accept: ", "text/html"));
-        System.out.println(HttpClient.post(url, headers));
+    public static void postFile() {
+        String url = "http://httpbin.org/post";
+        String userDirectory = System.getProperty("user.dir");
+        File file = new File(userDirectory + "/test.txt");
+        Map<String, String> headers = Map.ofEntries();//entry("Content-Type:", "text/html"));
+        System.out.println(HttpClient.post(url, headers, file, false));
     }
 }
