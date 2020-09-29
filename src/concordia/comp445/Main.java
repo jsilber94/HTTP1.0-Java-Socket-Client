@@ -8,12 +8,12 @@ import static java.util.Map.entry;
 
 public class Main {
     public static void main(String[] args) {
-        getParams();
-        getParamsVerbose();
-        postJson();
-        postFile();
+//        getParams();
+//        getParamsVerbose();
+//        postJson();
+//        postFile();
+        getRedirect();
     }
-
 
     public static void getParams() {
         String url = "http://httpbin.org/get?course=networking&assignment=1";
@@ -39,5 +39,11 @@ public class Main {
         File file = new File(userDirectory + "/test.txt");
         Map<String, String> headers = Map.ofEntries();//entry("Content-Type:", "text/html"));
         System.out.println(HttpClient.post(url, headers, file, false));
+    }
+
+    public static void getRedirect() {
+        String url = "https://httpbingo.org/absolute-redirect/6";
+        Map<String, String> headers = Map.ofEntries(entry("Accept ", "text/html"));
+        System.out.println(HttpClient.get(url, headers, false));
     }
 }

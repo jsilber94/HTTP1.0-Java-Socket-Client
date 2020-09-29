@@ -12,11 +12,11 @@ import java.util.Map;
 public class HttpClient {
 
     private final static int httpPort = 80;
-    private final static StringBuilder responseString = new StringBuilder();
 
     private static Socket socket = null;
     private static URI uri = null;
     private static String verb = null;
+    private static StringBuilder responseString = null;
 
     private static OutputStream output = null;
     private static PrintWriter writer = null;
@@ -84,17 +84,19 @@ public class HttpClient {
             if (url == null || url.isEmpty())
                 throw new MalformedURLException("Bad url");
             uri = new URI(url);
+            responseString = new StringBuilder();
 
             // connect to server
             socket = new Socket(uri.getHost(), HttpClient.httpPort);
             HttpClient.sendRequest(headers);
 
-            String response = HttpClient.receiveResponse(verbose);
+            String response = HttpClient.receiveResponse();
 
             // close streams
             writer.close();
             output.close();
             reader.close();
+            // close socket
             socket.close();
 
             response = handleRedirect(response, headers, verbose);
@@ -116,7 +118,7 @@ public class HttpClient {
     }
 
     private static String handleRedirect(String response, Map<String, String> headers, boolean verbose) {
-        if (response.contains("302 FOUND") && response.contains("Location")) {
+        if (response.toLowerCase().contains("302 found") && response.contains("Location")) {
             String newURL = response.substring(response.indexOf("Location:") + 10);
             newURL = newURL.substring(0, newURL.indexOf("\n"));
 
@@ -183,7 +185,6 @@ public class HttpClient {
 
         if (verb.equals("POST"))
             addPayload();
-
     }
 
     private static String determinePath(URI uri) {
@@ -216,7 +217,7 @@ public class HttpClient {
         }
     }
 
-    private static String receiveResponse(boolean verbose) throws IOException {
+    private static String receiveResponse() throws IOException {
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String line;
         while ((line = reader.readLine()) != null) {
