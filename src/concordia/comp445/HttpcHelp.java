@@ -1,6 +1,6 @@
 package concordia.comp445;
 
-// this class is created to contain a function the prints out what the cURL-like Command Line Implementation does
+// this class is created to contain a function that prints out what the cURL-like Command Line Implementation does
 public class HttpcHelp {
 
     private String requestType;
