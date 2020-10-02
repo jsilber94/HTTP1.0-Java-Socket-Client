@@ -1,6 +1,7 @@
 package concordia.comp445;
 
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
 
 @Parameters(commandDescription = "POST request")
 public class HttpcPost {
@@ -14,10 +15,10 @@ public class HttpcPost {
     @Parameter(names = {"-h"})
     private String header;
 
-    @Parameter(names = {"-d"}, forbids={"-f"})
+    @Parameter(names = {"-d"})
     private String option;
 
-    @Parameter(names = {"-f"},forbids={"-d"})
+    @Parameter(names = {"-f"})
     private String inputFile;
 
     @Parameter(description = "Host name")
