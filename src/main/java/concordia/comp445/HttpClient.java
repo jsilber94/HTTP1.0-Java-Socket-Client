@@ -89,7 +89,9 @@ public class HttpClient {
         try {
             if (url == null || url.isEmpty())
                 throw new MalformedURLException("Bad url");
+            url = url.replaceAll(" ", "%20");
             uri = new URI(url);
+
             responseString = new StringBuilder();
 
             // connect to server
