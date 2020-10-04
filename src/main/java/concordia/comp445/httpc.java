@@ -38,7 +38,8 @@ public class httpc {
                 url = get.getUrl();
                 isVerbose = get.getVerbose();
                 parseParameters(get.getHeader()); // headers
-                HttpClient.get(url, headers, false);
+                String response = HttpClient.get(url, headers, false);
+                System.out.println(response);
 
             // for the command httpc post
             } else if(requestType.equals("post")) {
@@ -53,9 +54,9 @@ public class httpc {
                 if(post.getInputFile() != null) {
                     options.put("input_file", readInputFile(post.getInputFile()));
                 }
-
                 try{
-                    HttpClient.post(url, headers, false);
+                    String response = HttpClient.post(url, headers, false);
+                    System.out.println(response);
                 } catch(IllegalArgumentException e) {
                     System.out.println(e.getMessage());
                 }
