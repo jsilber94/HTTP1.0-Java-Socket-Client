@@ -89,7 +89,11 @@ public class HttpClient {
         try {
             if (url == null || url.isEmpty())
                 throw new MalformedURLException("Bad url");
+            url = url.replaceAll("'", "");
+            url = url.replaceAll("\"", "");
+            url = url.replaceAll(" ", "%20");
             uri = new URI(url);
+
             responseString = new StringBuilder();
 
             // connect to server
@@ -112,7 +116,7 @@ public class HttpClient {
             // static class so always make sure to reset after each request
             payload = null;
             filePayload = null;
-            return verbose ? parseResponse(response) : response;
+            return verbose ? response : parseResponse(response);
 
         } catch (UnknownHostException ex) {
             System.out.println("Server not found: " + ex.getMessage());
@@ -236,7 +240,7 @@ public class HttpClient {
     }
 
     private static String parseResponse(String response) {
-        return response.substring(response.indexOf("\"args\"") - 2);
+        return response.substring(response.indexOf("\"args\"") - 4);
     }
 
 
