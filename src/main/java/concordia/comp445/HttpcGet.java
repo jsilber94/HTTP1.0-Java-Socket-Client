@@ -2,8 +2,6 @@ package concordia.comp445;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 
-import java.util.Map;
-
 @Parameters(commandDescription = "GET request")
 public class HttpcGet {
 

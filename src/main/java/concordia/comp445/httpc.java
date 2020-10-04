@@ -34,7 +34,7 @@ public class httpc {
 
             // for the command httpc get
             if(requestType.equals("get")) {
-                headers = new HashMap<>();
+                headers = new HashMap<String, String>();
                 url = get.getUrl();
                 isVerbose = get.getVerbose();
                 parseParameters(get.getHeader()); // headers
@@ -44,8 +44,8 @@ public class httpc {
             } else if(requestType.equals("post")) {
                 url = post.getUrl();
                 isVerbose = post.getVerbose();
-                headers = new HashMap<>();
-                options = new HashMap<>();
+                headers = new HashMap<String, String>();
+                options = new HashMap<String, String>();
                 parseParameters(post.getHeader());
                 if(post.getOption() != null) {
                     options.put("inline_data", post.getOption());
