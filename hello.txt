@@ -1,0 +1,17 @@
+{
+  "args": {}, 
+  "data": "this is a test file", 
+  "files": {}, 
+  "form": {}, 
+  "headers": {
+    "Accept": "*/*", 
+    "Content-Length": "19", 
+    "Content-Type": "text/plain", 
+    "Host": "httpbin.org", 
+    "User-Agent": "Concordia-HTTP/1.0", 
+    "X-Amzn-Trace-Id": "Root=1-5f7a2a32-01df2af8242c9b9854f05c81"
+  }, 
+  "json": null, 
+  "origin": "184.160.32.232", 
+  "url": "http://httpbin.org/post"
+}

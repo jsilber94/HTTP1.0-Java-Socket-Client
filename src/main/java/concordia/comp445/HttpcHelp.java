@@ -1,6 +1,9 @@
 package concordia.comp445;
 
-// this class is created to contain a function that prints out what the cURL-like Command Line Implementation does
+
+/**
+ * this class is created to contain a function that prints out what the cURL-like Command Line Implementation does
+ */
 public class HttpcHelp {
 
     private String requestType;
@@ -9,7 +12,11 @@ public class HttpcHelp {
         this.requestType = requestType;
     }
 
-    // display text described in the assignment instructions on how the httpc should behave
+
+    /**
+     * display text described in the assignment instructions on how the httpc should behave
+     * @return String HelpText
+     */
     public String displayHelpText() {
         StringBuilder sb = new StringBuilder();
         // this should be displayed when the user runs the command (httpc help)

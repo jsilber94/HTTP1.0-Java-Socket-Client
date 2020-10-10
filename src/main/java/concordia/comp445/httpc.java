@@ -2,8 +2,7 @@ package concordia.comp445;
 
 import com.beust.jcommander.JCommander;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +15,7 @@ public class httpc {
 
     public static void main(String[] args) {
         String requestType = "";
+        String response = "";
 
         // parse
         Parameters parameters = new Parameters();
@@ -38,8 +38,18 @@ public class httpc {
                 url = get.getUrl();
                 isVerbose = get.getVerbose();
                 parseParameters(get.getHeader()); // headers
-                String response = HttpClient.get(url, headers, false);
-                System.out.println(response);
+                response = HttpClient.get(url, headers, isVerbose);
+                if(get.getOutputFile() != null){
+                    try {
+                        FileWriter myWriter = new FileWriter(get.getOutputFile());
+                        myWriter.write(response);
+                        myWriter.close();
+                    }catch(IOException ioe){
+                        System.out.println("Unable to find output file.");
+                        System.out.println("Printing response.");
+                        System.out.println(response);
+                    }
+                }else System.out.println(response);
 
             // for the command httpc post
             } else if(requestType.equals("post")) {
@@ -52,13 +62,33 @@ public class httpc {
                     options.put("inline_data", post.getOption());
                 }
                 if(post.getInputFile() != null) {
-                    options.put("input_file", readInputFile(post.getInputFile()));
+                    options.put("input_file", post.getInputFile());
                 }
                 try{
-                    String response = HttpClient.post(url, headers, false);
-                    System.out.println(response);
+                    if (options.get("inline_data") != null)
+                        response = HttpClient.post(url, headers,options.get("inline_data"), isVerbose);
+                    else if (options.get("input_file") != null){
+                        if(options.get("input_file").substring(0).equals("/")){
+                            File file = new File(System.getProperty("user.dir") + options.get("input_file"));
+                            response = HttpClient.post(url,headers, file, isVerbose);
+                        }else {
+                            File file = new File(System.getProperty("user.dir") +"/"+ options.get("input_file"));
+                            response = HttpClient.post(url,headers, file, isVerbose);
+                        }
+                    }
+                    else
+                        response = HttpClient.post(url, headers, isVerbose);
+                    if(post.getOutputFile() != null) {
+                        FileWriter myWriter = new FileWriter(post.getOutputFile());
+                        myWriter.write(response);
+                        myWriter.close();
+                    }else System.out.println(response);
                 } catch(IllegalArgumentException e) {
                     System.out.println(e.getMessage());
+                } catch(IOException ioe){
+                    System.out.println("Unable to find output file.");
+                    System.out.println("Printing response.");
+                    System.out.println(response);
                 }
             }
         }
