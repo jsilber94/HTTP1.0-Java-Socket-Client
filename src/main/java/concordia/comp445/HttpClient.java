@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Http Client made with sockets
  *
- * @author Jesse Silber - 26993702
+ * @author Jesse Silber 
  */
 
 public class HttpClient {
